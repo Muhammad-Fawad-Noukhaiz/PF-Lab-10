@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Movie {
+    char title[100];
+    char genre[50];
+    char director[100];
+    int releaseYear;
+    float rating;
+};
+
+void addMovie(struct Movie movies[], int *movieCount) {
+    if (*movieCount >= 100) {
+        printf("Movie list is full! Cannot add more movies.\n");
+        return;
+    }
+    struct Movie newMovie;
+    printf("Enter movie title: ");
+    scanf(" %[^\n]s", newMovie.title);
+    printf("Enter movie genre: ");
+    scanf(" %[^\n]s", newMovie.genre);
+    printf("Enter movie director: ");
+    scanf(" %[^\n]s", newMovie.director);
+    printf("Enter release year: ");
+    scanf("%d", &newMovie.releaseYear);
+    printf("Enter movie rating (out of 10): ");
+    scanf("%f", &newMovie.rating);
+
+    movies[*movieCount] = newMovie;
+    (*movieCount)++;
+    printf("Movie added successfully!\n");
+}
+
+void searchMoviesByGenre(struct Movie movies[], int movieCount, const char *genre) {
+    int found = 0;
+    printf("\nMovies in the genre '%s':\n", genre);
+    for (int i = 0; i < movieCount; i++) {
+        if (strcmp(movies[i].genre, genre) == 0) {
+            printf("- %s (Directed by %s, Released in %d, Rating: %.1f)\n",
+                   movies[i].title, movies[i].director, movies[i].releaseYear, movies[i].rating);
+            found = 1;
+        }
+    }
+    if (!found) {
+        printf("No movies found in this genre.\n");
+    }
+}
+
+void displayAllMovies(struct Movie movies[], int movieCount) {
+    if (movieCount == 0) {
+        printf("No movies available.\n");
+        return;
+    }
+    printf("\n--- Movie List ---\n");
+    for (int i = 0; i < movieCount; i++) {
+        printf("Title: %s\n", movies[i].title);
+        printf("Genre: %s\n", movies[i].genre);
+        printf("Director: %s\n", movies[i].director);
+        printf("Release Year: %d\n", movies[i].releaseYear);
+        printf("Rating: %.1f/10\n", movies[i].rating);
+        printf("-------------------------\n");
+    }
+}
+
+int main() {
+    struct Movie movies[100];
+    int movieCount = 0;
+    int choice;
+
+    while (1) {
+        printf("\n--- Movie Management System ---\n");
+        printf("1. Add New Movie\n");
+        printf("2. Search Movies by Genre\n");
+        printf("3. Display All Movies\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addMovie(movies, &movieCount);
+                break;
+            case 2: {
+                char genre[50];
+                printf("Enter genre to search: ");
+                scanf(" %[^\n]s", genre);
+                searchMoviesByGenre(movies, movieCount, genre);
+                break;
+            }
+            case 3:
+                displayAllMovies(movies, movieCount);
+                break;
+            case 4:
+                printf("Exiting program. Goodbye!\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
