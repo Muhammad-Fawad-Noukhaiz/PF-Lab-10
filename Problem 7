@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+#define METERS_TO_KM 0.001
+
+float convertToKilometers(float meters) {
+    static int callCount = 0;
+    callCount++;
+
+    printf("Conversion call count: %d\n", callCount);
+    return meters * METERS_TO_KM;
+}
+
+int main() {
+    float meters;
+
+    printf("Enter distance in meters: ");
+    scanf("%f", &meters);
+
+    float kilometers = convertToKilometers(meters);
+    printf("Distance in kilometers: %.2f km\n", kilometers);
+
+    return 0;
+}
