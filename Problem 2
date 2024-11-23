@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+#define MAX_TEMPERATURE 40.0
+
+void checkTemperature(float temperature) {
+    static int exceedCount = 0;
+
+    if (temperature > MAX_TEMPERATURE) {
+        exceedCount++;
+        printf("Warning: Temperature %.2f exceeds the maximum allowable limit of %.2f!\n", temperature, MAX_TEMPERATURE);
+    } else {
+        printf("Temperature %.2f is within the allowable limit.\n", temperature);
+    }
+
+    printf("Number of times temperatures exceeded the limit: %d\n", exceedCount);
+}
+
+int main() {
+    float temp;
+    int choice;
+
+    printf("--- Temperature Monitoring Program ---\n");
+    while (1) {
+        printf("\n1. Input Temperature\n");
+        printf("2. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Enter the temperature (in Celsius): ");
+            scanf("%f", &temp);
+            checkTemperature(temp);
+        } else if (choice == 2) {
+            printf("Exiting program. Goodbye!\n");
+            break;
+        } else {
+            printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
