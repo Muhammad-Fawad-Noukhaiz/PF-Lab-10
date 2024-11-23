@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+
+struct TravelPackage {
+    char packageName[100];
+    char destination[100];
+    int duration;
+    float cost;
+    int availableSeats;
+};
+
+void bookPackage(struct TravelPackage packages[], int *packageCount, char *packageName) {
+    for (int i = 0; i < *packageCount; i++) {
+        if (strcmp(packages[i].packageName, packageName) == 0) {
+            if (packages[i].availableSeats > 0) {
+                packages[i].availableSeats--;
+                printf("Successfully booked '%s'. Remaining seats: %d\n", packages[i].packageName, packages[i].availableSeats);
+                return;
+            } else {
+                printf("Sorry, no seats available for '%s'.\n", packages[i].packageName);
+                return;
+            }
+        }
+    }
+    printf("Package '%s' not found.\n", packageName);
+}
+
+void displayPackages(struct TravelPackage packages[], int packageCount) {
+    printf("\n--- Available Travel Packages ---\n");
+    for (int i = 0; i < packageCount; i++) {
+        printf("Package: %s\n", packages[i].packageName);
+        printf("Destination: %s\n", packages[i].destination);
+        printf("Duration: %d days\n", packages[i].duration);
+        printf("Cost: $%.2f\n", packages[i].cost);
+        printf("Available Seats: %d\n", packages[i].availableSeats);
+        printf("-------------------------------\n");
+    }
+}
+
+int main() {
+    struct TravelPackage packages[100];
+    int packageCount = 0;
+
+    strcpy(packages[packageCount].packageName, "Beach Vacation");
+    strcpy(packages[packageCount].destination, "Hawaii");
+    packages[packageCount].duration = 7;
+    packages[packageCount].cost = 2000.0;
+    packages[packageCount].availableSeats = 5;
+    packageCount++;
+
+    strcpy(packages[packageCount].packageName, "Mountain Adventure");
+    strcpy(packages[packageCount].destination, "Swiss Alps");
+    packages[packageCount].duration = 10;
+    packages[packageCount].cost = 3500.0;
+    packages[packageCount].availableSeats = 3;
+    packageCount++;
+
+    displayPackages(packages, packageCount);
+
+    char packageName[100];
+    printf("\nEnter the package name to book: ");
+    scanf(" %[^\n]", packageName);
+
+    bookPackage(packages, &packageCount, packageName);
+    
+    return 0;
+}
